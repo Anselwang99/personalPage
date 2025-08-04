@@ -12,66 +12,75 @@ const distPath = path.join(__dirname, "dist");
 // Create Express app
 const app = express();
 
-// Basic request logging
+// Check environment
+const useSubpath = process.env.VITE_USE_SUBPATH === "true";
+const basePath = useSubpath ? "/personalPage" : "";
+console.log(
+    `Configuration: Using subpath: ${useSubpath}, Base path: '${basePath}'`
+);
+
+// Log environment variables
+console.log("Environment variables:", {
+    NODE_ENV: process.env.NODE_ENV || "not set",
+    VITE_DEPLOYMENT: process.env.VITE_DEPLOYMENT || "not set",
+    VITE_CUSTOM_DOMAIN: process.env.VITE_CUSTOM_DOMAIN || "not set",
+    VITE_USE_SUBPATH: process.env.VITE_USE_SUBPATH || "not set",
+});
+
+// Log files in dist directory
+console.log("Files in dist directory:");
+if (fs.existsSync(distPath)) {
+    fs.readdirSync(distPath).forEach((file) => {
+        const filePath = path.join(distPath, file);
+        const stats = fs.statSync(filePath);
+        console.log(
+            `- ${file} (${stats.isDirectory() ? "directory" : "file"}, ${
+                stats.size
+            } bytes)`
+        );
+    });
+} else {
+    console.error(`ERROR: dist directory not found at ${distPath}`);
+}
+
+// Simple request logging
 app.use((req, res, next) => {
     console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
     next();
 });
 
-// First, serve static files
-app.use(express.static(distPath));
+// Redirect root to /personalPage/ when using subpath
+if (useSubpath) {
+    app.use("/", (req, res, next) => {
+        if (req.url === "/") {
+            console.log("Root path -> Redirecting to /personalPage/");
+            return res.redirect("/personalPage/");
+        }
+        next();
+    });
 
-// Then handle SPA routes - serve index.html for any path that doesn't match a file
-app.use((req, res) => {
-    console.log(`Fallback to index.html for: ${req.url}`);
+    // Serve static files from /personalPage/
+    app.use("/personalPage/", express.static(distPath));
 
-    const indexPath = path.join(distPath, "index.html");
-    if (fs.existsSync(indexPath)) {
-        res.sendFile(indexPath);
-    } else {
-        console.error(`Error: index.html not found at ${indexPath}`);
-        res.status(404).send(
-            "index.html not found. Build may be missing or incomplete."
-        );
-    }
-});
+    // Fallback to index.html for any requests to /personalPage/ that don't match a static file
+    app.use("/personalPage/", (req, res) => {
+        console.log(`Fallback: Serving index.html for: ${req.url}`);
+        res.sendFile(path.join(distPath, "index.html"));
+    });
+} else {
+    // For root deployment, serve static files at root
+    app.use(express.static(distPath));
 
-// Use environment port or 8080 as default
+    // Fallback for SPA
+    app.use((req, res) => {
+        console.log(`Fallback: Serving index.html for: ${req.url}`);
+        res.sendFile(path.join(distPath, "index.html"));
+    });
+}
+
+// Start server
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
     console.log(`Serving files from: ${distPath}`);
-
-    // Log environment info
-    console.log("Environment variables:", {
-        NODE_ENV: process.env.NODE_ENV || "not set",
-        VITE_DEPLOYMENT: process.env.VITE_DEPLOYMENT || "not set",
-    });
-
-    // Check if index.html exists and list directory contents
-    try {
-        const indexPath = path.join(distPath, "index.html");
-
-        if (fs.existsSync(indexPath)) {
-            console.log(`index.html found at ${indexPath}`);
-            console.log(`File size: ${fs.statSync(indexPath).size} bytes`);
-
-            // List files in dist directory
-            console.log("Files in dist directory:");
-            const files = fs.readdirSync(distPath);
-            files.forEach((file) => {
-                const filePath = path.join(distPath, file);
-                const stats = fs.statSync(filePath);
-                console.log(
-                    `- ${file} (${
-                        stats.isDirectory() ? "directory" : "file"
-                    }, ${stats.size} bytes)`
-                );
-            });
-        } else {
-            console.error(`WARNING: index.html not found at ${indexPath}`);
-        }
-    } catch (err) {
-        console.error("Error checking for index.html:", err);
-    }
 });
