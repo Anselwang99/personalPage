@@ -1,0 +1,17 @@
+Section,Details
+Name,Zhanglu (Ansel) Wang
+Location,"Sunnyvale, CA"
+Phone,(951) 816-7191
+Email,Anselwang9948@gmail.com
+LinkedIn,https://www.linkedin.com/in/anselw/
+Education 1,New York University - MS in Information Systems (Sept 2021 – May 2023)
+Education 2,UC Santa Barbara - BS in Computer Engineering (Sept 2017 – Jun 2021)
+Work Experience 1,"Walmart, Software Engineer (Sept 2024 – Present), Sunnyvale, CA: Backend services with Node.js/Express/MongoDB, product pipeline, monitoring tools, Slack chatbot."
+Work Experience 2,"Sigillum, Fullstack Software Engineer (Sept 2022 – Jan 2023), New York, NY: React app, backend with Express/MongoDB, chat with Socket.IO, PDF service."
+Work Experience 3,"Pathover, Fullstack Developer (Jun 2021 – Jan 2022), San Francisco, CA: Task management UI, optimized routes, notifications, JWT auth."
+Work Experience 4,"Gaoyu Group, Software Developer (Jul 2020 – Sept 2020), Chengdu, China: Android COVID self-monitoring app."
+Project 1,"Stock Sentiment vs Market: Used VADER sentiment analysis and ML models (Linear, Logistic, Random Forest, SVR) on 40,000+ feeds. RMSE: 6.21."
+Technical Skills - Programming,"JavaScript, TypeScript, HTML / CSS"
+Technical Skills - Frameworks,"React, Angular 2+, NodeJS, Docker, Nginx, Google Cloud, Bootstrap, Material UI, React Testing Library"
+Technical Skills - Tools,"AWS, Mongoose, NPM, VS Code, Postman, Git, Jira, Heroku, JWT, Bcrypt, Mocha, Chai"
+Technical Skills - Databases,"MongoDB, Firebase, MySQL, Oracle"
