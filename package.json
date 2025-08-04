@@ -6,6 +6,7 @@
     "homepage": "https://anselwang99.github.io/personalPage/",
     "scripts": {
         "dev": "vite",
+        "prebuild": "node scripts/prepare-build.js",
         "build": "vite build",
         "lint": "eslint .",
         "preview": "vite preview",
