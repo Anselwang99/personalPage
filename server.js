@@ -1,53 +1,73 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
-import process from "process";
 import fs from "fs";
+import process from "process";
 
 // Get __dirname equivalent in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const distPath = path.join(__dirname, "dist");
 
+// Create Express app
 const app = express();
 
-// Add request logging
+// Basic request logging
 app.use((req, res, next) => {
-    console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
     next();
 });
 
-// Serve static files from the dist directory
-app.use(express.static(path.join(__dirname, "dist")));
+// First, serve static files
+app.use(express.static(distPath));
 
-// Handle routes for single-page application
-app.use((req, res, next) => {
-    // Skip API routes or static files
-    if (req.path.startsWith("/api") || req.path.includes(".")) {
-        return next();
+// Then handle SPA routes - serve index.html for any path that doesn't match a file
+app.use((req, res) => {
+    console.log(`Fallback to index.html for: ${req.url}`);
+
+    const indexPath = path.join(distPath, "index.html");
+    if (fs.existsSync(indexPath)) {
+        res.sendFile(indexPath);
+    } else {
+        console.error(`Error: index.html not found at ${indexPath}`);
+        res.status(404).send(
+            "index.html not found. Build may be missing or incomplete."
+        );
     }
-    // For all other routes, serve the index.html file
-    console.log(`Serving index.html for path: ${req.path}`);
-    res.sendFile(path.join(__dirname, "dist", "index.html"));
-});
-
-// Add error handler middleware
-// eslint-disable-next-line no-unused-vars
-app.use((err, req, res, next) => {
-    console.error(`Error: ${err.message}`);
-    console.error(err.stack);
-    res.status(500).send("Something went wrong!");
 });
 
 // Use environment port or 8080 as default
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
-    console.log(`Serving files from: ${path.join(__dirname, "dist")}`);
-    // Check if index.html exists
+    console.log(`Serving files from: ${distPath}`);
+
+    // Log environment info
+    console.log("Environment variables:", {
+        NODE_ENV: process.env.NODE_ENV || "not set",
+        VITE_DEPLOYMENT: process.env.VITE_DEPLOYMENT || "not set",
+    });
+
+    // Check if index.html exists and list directory contents
     try {
-        const indexPath = path.join(__dirname, "dist", "index.html");
+        const indexPath = path.join(distPath, "index.html");
+
         if (fs.existsSync(indexPath)) {
             console.log(`index.html found at ${indexPath}`);
+            console.log(`File size: ${fs.statSync(indexPath).size} bytes`);
+
+            // List files in dist directory
+            console.log("Files in dist directory:");
+            const files = fs.readdirSync(distPath);
+            files.forEach((file) => {
+                const filePath = path.join(distPath, file);
+                const stats = fs.statSync(filePath);
+                console.log(
+                    `- ${file} (${
+                        stats.isDirectory() ? "directory" : "file"
+                    }, ${stats.size} bytes)`
+                );
+            });
         } else {
             console.error(`WARNING: index.html not found at ${indexPath}`);
         }
