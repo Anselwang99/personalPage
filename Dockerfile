@@ -15,7 +15,8 @@ COPY . .
 ENV VITE_DEPLOYMENT=cloud-run
 
 # Build the application with root base path for Cloud Run
-RUN npm run build
+# Pass the environment variable explicitly to the build process
+RUN VITE_DEPLOYMENT=cloud-run npm run build
 
 # Expose port 8080
 EXPOSE 8080
