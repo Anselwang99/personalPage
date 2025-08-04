@@ -171,7 +171,7 @@ The GitHub Actions workflow will:
 
 ### Manual Deployment
 
-You can also deploy the site manually:
+You can deploy the site manually:
 
 ```bash
 # Build the production version
@@ -180,6 +180,40 @@ npm run build
 # Deploy to a hosting service of your choice
 # The build output will be in the 'dist' directory
 ```
+
+### Docker Deployment to Google Cloud Run
+
+This project is also set up for containerized deployment to Google Cloud Run:
+
+1. Authenticate with Google Cloud:
+
+    ```bash
+    gcloud auth login
+    ```
+
+2. Configure Docker to use Google Cloud credentials:
+
+    ```bash
+    gcloud auth configure-docker gcr.io
+    ```
+
+3. Build and push the Docker image:
+
+    ```bash
+    docker build -t gcr.io/YOUR_PROJECT_ID/personal-portfolio:latest .
+    docker push gcr.io/YOUR_PROJECT_ID/personal-portfolio:latest
+    ```
+
+4. Deploy to Google Cloud Run:
+    ```bash
+    gcloud run deploy personal-portfolio \
+      --image gcr.io/YOUR_PROJECT_ID/personal-portfolio:latest \
+      --platform managed \
+      --region us-central1 \
+      --allow-unauthenticated
+    ```
+
+For automated deployments, check the GitHub workflow file at `.github/workflows/google-cloud-run.yml`.
 
 ## License
 
