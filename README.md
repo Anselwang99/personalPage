@@ -213,7 +213,33 @@ This project is also set up for containerized deployment to Google Cloud Run:
       --allow-unauthenticated
     ```
 
-For automated deployments, check the GitHub workflow file at `.github/workflows/google-cloud-run.yml`.
+### Setting up GitHub Actions for Google Cloud
+
+For automated deployments, this project uses GitHub Actions. To set up:
+
+1. Create a Service Account in Google Cloud with these roles:
+
+    - Storage Admin (`roles/storage.admin`)
+    - Cloud Run Admin (`roles/run.admin`)
+    - Service Account User (`roles/iam.serviceAccountUser`)
+
+2. Create a JSON key for this service account:
+
+    - In Google Cloud Console, go to "IAM & Admin" > "Service Accounts"
+    - Find your service account and click on it
+    - Go to the "Keys" tab and click "Add Key" > "Create new key"
+    - Choose JSON format and download the key file
+
+3. Add the key as a GitHub Secret:
+
+    - In your GitHub repo, go to "Settings" > "Secrets and variables" > "Actions"
+    - Create a new secret named `GCP_SA_KEY`
+    - Paste the entire contents of the downloaded JSON key file
+
+4. Add EmailJS secrets:
+    - Create secrets for `EMAILJS_SERVICE_ID`, `EMAILJS_TEMPLATE_ID`, and `EMAILJS_PUBLIC_KEY`
+
+For workflow details, check the GitHub workflow file at `.github/workflows/google-cloud-run.yml`.
 
 ## License
 
