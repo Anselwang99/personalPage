@@ -1,35 +1,61 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useEffect } from "react";
+import "./App.css";
+
+// Import components
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
+import Hero from "./components/Hero";
+import About from "./components/About";
+import Experience from "./components/Experience";
+import Skills from "./components/Skills";
+import Projects from "./components/Projects";
+import Contact from "./components/Contact";
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [activePage, setActivePage] = useState("home");
+    const [isLoading, setIsLoading] = useState(true);
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    useEffect(() => {
+        // Add a small delay to simulate content loading
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    return (
+        <div className={`app-container ${isLoading ? "loading" : "loaded"}`}>
+            {isLoading ? (
+                <div className="loader">
+                    <div className="spinner"></div>
+                    <p>Loading...</p>
+                </div>
+            ) : (
+                <>
+                    <header>
+                        <Navbar
+                            activePage={activePage}
+                            setActivePage={setActivePage}
+                        />
+                    </header>
+
+                    <main>
+                        {activePage === "home" && (
+                            <Hero setActivePage={setActivePage} />
+                        )}
+                        {activePage === "about" && <About />}
+                        {activePage === "experience" && <Experience />}
+                        {activePage === "skills" && <Skills />}
+                        {activePage === "projects" && <Projects />}
+                        {activePage === "contact" && <Contact />}
+                    </main>
+
+                    <Footer />
+                </>
+            )}
+        </div>
+    );
 }
 
-export default App
+export default App;
