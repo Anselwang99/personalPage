@@ -6,7 +6,7 @@ on:
     workflow_dispatch:
 
 env:
-    PROJECT_ID: your-google-cloud-project-id # TODO: Replace with your project ID
+    PROJECT_ID: Personal Projects # TODO: Replace with your project ID
     SERVICE_NAME: personal-portfolio
     REGION: us-central1 # Choose your preferred region
 
