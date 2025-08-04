@@ -43,6 +43,13 @@ jobs:
             - name: "Set up Cloud SDK"
               uses: "google-github-actions/setup-gcloud@v1"
 
+            # Enable required APIs
+            - name: "Enable required APIs"
+              run: |
+                  gcloud services enable artifactregistry.googleapis.com
+                  gcloud services enable run.googleapis.com
+                  gcloud services enable cloudbuild.googleapis.com
+
             # Configure Docker to use gcloud credentials
             - name: "Configure Docker for GCR"
               run: gcloud auth configure-docker gcr.io --quiet
@@ -67,3 +74,7 @@ jobs:
                     --platform managed \
                     --region ${{ env.REGION }} \
                     --allow-unauthenticated
+
+                  # Display the service URL
+                  echo "🚀 Service deployed to:"
+                  gcloud run services describe ${{ env.SERVICE_NAME }} --region ${{ env.REGION }} --format="value(status.url)"
