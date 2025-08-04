@@ -49,12 +49,27 @@ A modern, responsive personal portfolio website built with React and Vite to sho
 3. Set up your EmailJS configuration:
 
     ```bash
+    # Copy the template environment file
+    cp .env.local.example .env.local
+    ```
+
+    Then edit `.env.local` with your actual EmailJS credentials.
+    You'll need to sign up at [EmailJS](https://www.emailjs.com/) to get your service ID, template ID, and public key.
+
+    ```
+    VITE_EMAILJS_SERVICE_ID=your_service_id
+    VITE_EMAILJS_TEMPLATE_ID=your_template_id
+    VITE_EMAILJS_PUBLIC_KEY=your_public_key
+    ```
+
+    Alternatively, you can still use the config file approach:
+
+    ```bash
     # Copy the template config file
     cp src/config.template.js src/config.js
     ```
 
     Then edit `src/config.js` with your actual EmailJS credentials.
-    You'll need to sign up at [EmailJS](https://www.emailjs.com/) to get your service ID, template ID, and public key.
 
 4. Start the development server:
 
@@ -129,3 +144,43 @@ This project is open source and available under the [MIT License](LICENSE).
 -   [Vite](https://vitejs.dev/)
 -   [Font Awesome](https://fontawesome.com/)
 -   [Google Fonts](https://fonts.google.com/)
+
+## Deployment
+
+### GitHub Actions
+
+This project is set up with GitHub Actions for automatic deployment to GitHub Pages. The workflow file is located at `.github/workflows/deploy.yml`.
+
+To set up GitHub Actions deployment:
+
+1. Add the following secrets to your GitHub repository settings:
+
+    - `EMAILJS_SERVICE_ID`: Your EmailJS service ID
+    - `EMAILJS_TEMPLATE_ID`: Your EmailJS template ID
+    - `EMAILJS_PUBLIC_KEY`: Your EmailJS public key
+
+2. Push your changes to the `main` branch to trigger the deployment workflow.
+
+The GitHub Actions workflow will:
+
+1. Check out the code
+2. Create an environment file with your EmailJS credentials
+3. Install dependencies
+4. Build the project
+5. Deploy to GitHub Pages
+
+### Manual Deployment
+
+You can also deploy the site manually:
+
+```bash
+# Build the production version
+npm run build
+
+# Deploy to a hosting service of your choice
+# The build output will be in the 'dist' directory
+```
+
+## License
+
+MIT License - see LICENSE file for details.

@@ -1,0 +1,38 @@
+
+## Deployment
+
+### GitHub Actions
+
+This project is set up with GitHub Actions for automatic deployment to GitHub Pages. The workflow file is located at `.github/workflows/deploy.yml`.
+
+To set up GitHub Actions deployment:
+
+1. Add the following secrets to your GitHub repository settings:
+   - `EMAILJS_SERVICE_ID`: Your EmailJS service ID
+   - `EMAILJS_TEMPLATE_ID`: Your EmailJS template ID
+   - `EMAILJS_PUBLIC_KEY`: Your EmailJS public key
+
+2. Push your changes to the `main` branch to trigger the deployment workflow.
+
+The GitHub Actions workflow will:
+1. Check out the code
+2. Create an environment file with your EmailJS credentials
+3. Install dependencies
+4. Build the project
+5. Deploy to GitHub Pages
+
+### Manual Deployment
+
+You can also deploy the site manually:
+
+```bash
+# Build the production version
+npm run build
+
+# Deploy to a hosting service of your choice
+# The build output will be in the 'dist' directory
+```
+
+## License
+
+MIT License - see LICENSE file for details.
