@@ -8,16 +8,31 @@ export default defineConfig(() => {
     // Need to use import.meta.env.VITE_ for client-side and process.env for server-side/build
     const isCloudRun = process.env?.VITE_DEPLOYMENT === "cloud-run";
 
+    // Check if this is a custom domain build
+    const isCustomDomain = process.env?.VITE_CUSTOM_DOMAIN === "true";
+
+    // Determine the deployment environment
+    let buildTarget = "GitHub Pages";
+    if (isCloudRun)
+        buildTarget = isCustomDomain ? "Custom Domain" : "Cloud Run";
+
+    // Choose the appropriate base path
+    const basePath = isCloudRun
+        ? isCustomDomain
+            ? "/"
+            : "/"
+        : "/personalPage/";
+
     // Debug output
-    console.log(`Building for: ${isCloudRun ? "Cloud Run" : "GitHub Pages"}`);
-    console.log(`Base path: ${isCloudRun ? "/" : "/personalPage/"}`);
-    console.log("Environment variable check:", {
+    console.log(`Building for: ${buildTarget}`);
+    console.log(`Base path: ${basePath}`);
+    console.log("Environment variables:", {
         VITE_DEPLOYMENT: process.env?.VITE_DEPLOYMENT,
+        VITE_CUSTOM_DOMAIN: process.env?.VITE_CUSTOM_DOMAIN,
     });
 
     return {
         plugins: [react()],
-        // Use root path for Cloud Run, /personalPage/ for GitHub Pages
-        base: isCloudRun ? "/" : "/personalPage/",
+        base: basePath,
     };
 });
