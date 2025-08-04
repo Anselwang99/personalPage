@@ -1,6 +1,5 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import emailjs from "@emailjs/browser";
-import { emailConfig } from "../config";
 
 function Contact() {
     const form = useRef();
@@ -11,6 +10,35 @@ function Contact() {
     });
     const [formStatus, setFormStatus] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [emailConfig, setEmailConfig] = useState({
+        serviceId: "",
+        templateId: "",
+        publicKey: "",
+    });
+
+    // Load config dynamically
+    useEffect(() => {
+        async function loadConfig() {
+            try {
+                // Try to load the main config
+                const config = await import("../config.js");
+                setEmailConfig(config.emailConfig);
+            } catch (error) {
+                console.warn("Main config not found, trying fallback...");
+                try {
+                    // Try to load the fallback config
+                    const fallbackConfig = await import(
+                        "../config.fallback.js"
+                    );
+                    setEmailConfig(fallbackConfig.emailConfig);
+                } catch (fallbackError) {
+                    console.error("Failed to load any config:", fallbackError);
+                }
+            }
+        }
+
+        loadConfig();
+    }, []);
 
     const handleEmailSuccess = (result) => {
         console.log("Email sent successfully:", result.text);
@@ -32,17 +60,28 @@ function Contact() {
         setIsSubmitting(true);
         setFormStatus(null);
 
-        // Using EmailJS credentials from config file
-        const { serviceId, templateId, publicKey } = emailConfig;
+        // Get EmailJS credentials (from config or fallback to env variables)
+        const serviceId =
+            emailConfig.serviceId || import.meta.env.VITE_EMAILJS_SERVICE_ID;
+        const templateId =
+            emailConfig.templateId || import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+        const publicKey =
+            emailConfig.publicKey || import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
-        // Send email
-        emailjs
-            .sendForm(serviceId, templateId, form.current, publicKey)
-            .then(handleEmailSuccess)
-            .catch(handleEmailError)
-            .finally(() => {
-                setIsSubmitting(false);
-            });
+        // Send email (only if we have credentials)
+        if (serviceId && templateId && publicKey) {
+            emailjs
+                .sendForm(serviceId, templateId, form.current, publicKey)
+                .then(handleEmailSuccess)
+                .catch(handleEmailError)
+                .finally(() => {
+                    setIsSubmitting(false);
+                });
+        } else {
+            console.error("Missing EmailJS credentials");
+            handleEmailError(new Error("Missing EmailJS credentials"));
+            setIsSubmitting(false);
+        }
     };
 
     return (
