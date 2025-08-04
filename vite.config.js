@@ -11,24 +11,29 @@ export default defineConfig(() => {
     // Check if this is a custom domain build
     const isCustomDomain = process.env?.VITE_CUSTOM_DOMAIN === "true";
 
+    // Check if we want to keep the personalPage path
+    const usePersonalPagePath = process.env?.VITE_USE_SUBPATH === "true";
+
     // Determine the deployment environment
     let buildTarget = "GitHub Pages";
     if (isCloudRun)
         buildTarget = isCustomDomain ? "Custom Domain" : "Cloud Run";
 
-    // Choose the appropriate base path
-    const basePath = isCloudRun
-        ? isCustomDomain
-            ? "/"
-            : "/"
+    // Choose the appropriate base path - always use /personalPage/ if specified
+    const basePath = usePersonalPagePath
+        ? "/personalPage/"
+        : isCloudRun
+        ? "/"
         : "/personalPage/";
 
     // Debug output
     console.log(`Building for: ${buildTarget}`);
     console.log(`Base path: ${basePath}`);
+    console.log(`Using subpath: ${usePersonalPagePath ? "Yes" : "No"}`);
     console.log("Environment variables:", {
         VITE_DEPLOYMENT: process.env?.VITE_DEPLOYMENT,
         VITE_CUSTOM_DOMAIN: process.env?.VITE_CUSTOM_DOMAIN,
+        VITE_USE_SUBPATH: process.env?.VITE_USE_SUBPATH,
     });
 
     return {
