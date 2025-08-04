@@ -11,7 +11,10 @@ RUN npm install
 # Copy the rest of the application
 COPY . .
 
-# Build the application
+# Set environment variable for Cloud Run deployment
+ENV VITE_DEPLOYMENT=cloud-run
+
+# Build the application with root base path for Cloud Run
 RUN npm run build
 
 # Expose port 8080
