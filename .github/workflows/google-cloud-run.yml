@@ -6,9 +6,9 @@ on:
     workflow_dispatch:
 
 env:
-    PROJECT_ID: Personal Projects # TODO: Replace with your project ID
+    PROJECT_ID: personal-projects-468006
     SERVICE_NAME: personal-portfolio
-    REGION: us-central1 # Choose your preferred region
+    REGION: us-central1
 
 jobs:
     deploy:
@@ -16,6 +16,22 @@ jobs:
         steps:
             - name: Checkout code
               uses: actions/checkout@v3
+
+            - name: Create config.js file with secrets
+              run: |
+                  echo 'export const emailConfig = {
+                    serviceId: "${{ secrets.EMAILJS_SERVICE_ID }}",
+                    templateId: "${{ secrets.EMAILJS_TEMPLATE_ID }}",
+                    publicKey: "${{ secrets.EMAILJS_PUBLIC_KEY }}"
+                  };' > src/config.js
+
+            - name: Create config file with secrets
+              run: |
+                  echo 'export const emailConfig = {
+                    serviceId: "${{ secrets.EMAILJS_SERVICE_ID }}",
+                    templateId: "${{ secrets.EMAILJS_TEMPLATE_ID }}",
+                    publicKey: "${{ secrets.EMAILJS_PUBLIC_KEY }}"
+                  };' > src/config.js
 
             - name: Setup Google Cloud SDK
               uses: google-github-actions/setup-gcloud@v1
