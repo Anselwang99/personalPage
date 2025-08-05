@@ -20,13 +20,11 @@ function Contact() {
     useEffect(() => {
         async function loadConfig() {
             try {
-                // Try to load the main config
                 const config = await import("../config.js");
                 setEmailConfig(config.emailConfig);
             } catch (error) {
                 console.warn("Main config not found, trying fallback...");
                 try {
-                    // Try to load the fallback config
                     const fallbackConfig = await import(
                         "../config.fallback.js"
                     );
