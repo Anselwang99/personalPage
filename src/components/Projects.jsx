@@ -19,17 +19,29 @@ function Projects() {
             id: 2,
             title: "Task Management App",
             description:
-                "Developed a comprehensive task management system with drag-and-drop UI, optimized routes, and notification system with JWT authentication.",
-            technologies: ["React", "Node.js", "MongoDB", "JWT"],
+                "Developed a comprehensive task management and admin system with React frontend, Express backend, and an Angular version. Features include drag-and-drop UI, JWT authentication, and state management.",
+            technologies: ["React", "Angular", "Express", "Node.js", "MongoDB"],
             image: taskImage,
+            sourceCodeLinks: {
+                react: "https://github.com/gabecpf97/employee_portal_react",
+                express: "https://github.com/gabecpf97/employee_portal_express",
+                angular: "https://github.com/gabecpf97/hr_portal_angular",
+            },
         },
         {
-            id: 3,
-            title: "Real-time Chat Application",
+            id: 5,
+            title: "HomeDepot AI Chatbot",
             description:
-                "Built a full-stack chat application with real-time messaging using Socket.IO, React frontend, and Express/MongoDB backend.",
-            technologies: ["React", "Socket.IO", "Express", "MongoDB"],
+                "Developed a Slack chatbot and web application to assist employees with product information and inventory management using OpenAI integration.",
+            technologies: [
+                "TypeScript",
+                "Express",
+                "Node.js",
+                "OpenAI API",
+                "Slack API",
+            ],
             image: chatImage,
+            sourceLink: "https://github.com/Anselwang99/Slackbot",
         },
         {
             id: 4,
@@ -43,9 +55,19 @@ function Projects() {
             id: 5,
             title: "Personal Portfolio Website",
             description:
-                "Modern responsive portfolio website built with React and Vite to showcase skills, experience, and projects.",
-            technologies: ["React", "Vite", "CSS3", "Responsive Design"],
+                "Full-stack portfolio with CI/CD workflows for both GitHub Pages and Google Cloud Run deployments, featuring dynamic path handling and contact form with EmailJS integration.",
+            technologies: [
+                "React 19",
+                "Express",
+                "Docker",
+                "Vite",
+                "GitHub Actions",
+                "Cloud Run",
+                "EmailJS",
+            ],
             image: portfolioImage,
+            liveLink: "https://fortunawang.com/personalPage/",
+            sourceLink: "https://github.com/Anselwang99/personalPage",
         },
     ];
 
@@ -62,6 +84,7 @@ function Projects() {
                         technologies={project.technologies}
                         liveLink={project.liveLink}
                         sourceLink={project.sourceLink}
+                        sourceCodeLinks={project.sourceCodeLinks}
                     />
                 ))}
             </div>

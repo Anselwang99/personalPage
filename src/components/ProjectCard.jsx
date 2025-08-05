@@ -5,6 +5,7 @@ function ProjectCard({
     technologies = [],
     liveLink,
     sourceLink,
+    sourceCodeLinks,
 }) {
     return (
         <div className="project-card">
@@ -45,6 +46,40 @@ function ProjectCard({
                     >
                         Source Code
                     </a>
+                )}
+                {sourceCodeLinks && (
+                    <div className="multiple-source-links">
+                        {sourceCodeLinks.react && (
+                            <a
+                                href={sourceCodeLinks.react}
+                                className="project-link"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                React Repo
+                            </a>
+                        )}
+                        {sourceCodeLinks.express && (
+                            <a
+                                href={sourceCodeLinks.express}
+                                className="project-link"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Express Repo
+                            </a>
+                        )}
+                        {sourceCodeLinks.angular && (
+                            <a
+                                href={sourceCodeLinks.angular}
+                                className="project-link"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                Angular Repo
+                            </a>
+                        )}
+                    </div>
                 )}
             </div>
         </div>
