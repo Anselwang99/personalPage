@@ -74,19 +74,21 @@ function Projects() {
     return (
         <section className="projects-section">
             <h2>My Projects</h2>
-            <div className="projects-grid">
-                {projects.map((project) => (
-                    <ProjectCard
-                        key={project.id}
-                        title={project.title}
-                        description={project.description}
-                        image={project.image}
-                        technologies={project.technologies}
-                        liveLink={project.liveLink}
-                        sourceLink={project.sourceLink}
-                        sourceCodeLinks={project.sourceCodeLinks}
-                    />
-                ))}
+            <div className="section-container">
+                <div className="projects-grid">
+                    {projects.map((project) => (
+                        <ProjectCard
+                            key={project.id}
+                            title={project.title}
+                            description={project.description}
+                            image={project.image}
+                            technologies={project.technologies}
+                            liveLink={project.liveLink}
+                            sourceLink={project.sourceLink}
+                            sourceCodeLinks={project.sourceCodeLinks}
+                        />
+                    ))}
+                </div>
             </div>
         </section>
     );

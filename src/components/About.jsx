@@ -23,18 +23,29 @@ function About() {
             <div className="about-content">
                 <div className="about-text">
                     <p>
-                        I am a Software Engineer based in Sunnyvale, CA with
-                        expertise in full-stack development. I enjoy building
-                        robust applications with modern technologies, turning
-                        complex problems into simple, beautiful and intuitive
-                        solutions.
+                        I am a Software Engineer at Walmart with expertise in
+                        full-stack development specializing in React, Node.js,
+                        and cloud technologies. With a background in Computer
+                        Engineering and Information Systems, I blend technical
+                        expertise with a strong business understanding to
+                        deliver impactful solutions.
                     </p>
                     <p>
-                        With a strong foundation in both frontend and backend
-                        development, I bring technical expertise and creative
-                        problem-solving to every project I work on. My goal is
-                        to create applications that are not only functional but
-                        also provide an exceptional user experience.
+                        My professional experience spans diverse domains
+                        including e-commerce, healthcare technology, and
+                        financial software. I excel at building scalable
+                        microservices, optimizing application performance, and
+                        implementing secure authentication systems. My approach
+                        combines efficient code with thoughtful user experience
+                        design.
+                    </p>
+                    <p>
+                        Beyond coding, I'm passionate about data analysis and
+                        machine learning, having developed sentiment analysis
+                        systems and predictive models. I'm constantly exploring
+                        emerging technologies and best practices to create
+                        applications that are robust, maintainable, and deliver
+                        exceptional value.
                     </p>
 
                     <div className="education-section">
